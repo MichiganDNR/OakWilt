@@ -10,15 +10,23 @@ import PIL.ExifTags as ExifTags
 import pandas as pd
 import logging
 import json
+from pathlib import Path
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {'origins': "*"}})
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-DESTINATION_PATH = "E:/Research/Vue-Flusk/dnr/sample_images"
-RESULTS_PATH = "E:/Research/Vue-Flusk/dnr/Results"
-MODEL_PATH = 'E:/Research/Vue-Flusk/dnr/oak_wilt_demo2.h5'
-FEEDBACK_FILE_PATH = os.path.join(DESTINATION_PATH, 'feedback.json')
+BASE_DIR = Path(__file__).resolve().parent
+
+DESTINATION_PATH = BASE_DIR / 'dnr' / 'sample_images'
+RESULTS_PATH = BASE_DIR / 'dnr' / 'Results'
+MODEL_PATH = BASE_DIR.parent / 'oak_wilt_demo2.h5'
+
+# Create directories if they do not exist
+DESTINATION_PATH.mkdir(parents=True, exist_ok=True)
+RESULTS_PATH.mkdir(parents=True, exist_ok=True)
+
+FEEDBACK_FILE_PATH = DESTINATION_PATH / 'feedback.json'
 
 logging.basicConfig(level=logging.INFO)
 
