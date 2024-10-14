@@ -11,22 +11,28 @@ import pandas as pd
 import logging
 import json
 from pathlib import Path
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {'origins': "*"}})
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Load environment variables from .env file
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent
 
-DESTINATION_PATH = BASE_DIR / 'dnr' / 'sample_images'
-RESULTS_PATH = BASE_DIR / 'dnr' / 'Results'
-MODEL_PATH = BASE_DIR.parent / 'oak_wilt_demo2.h5'
+# Retrieve values from environment variables
+DESTINATION_PATH = BASE_DIR / os.getenv('DESTINATION_PATH')
+RESULTS_PATH = BASE_DIR / os.getenv('RESULTS_PATH')
+MODEL_PATH = BASE_DIR.parent / os.getenv('MODEL_PATH')
 
 # Create directories if they do not exist
 DESTINATION_PATH.mkdir(parents=True, exist_ok=True)
 RESULTS_PATH.mkdir(parents=True, exist_ok=True)
 
-FEEDBACK_FILE_PATH = DESTINATION_PATH / 'feedback.json'
+FEEDBACK_FILE_PATH = DESTINATION_PATH / os.getenv('FEEDBACK_FILE_NAME')
 
 logging.basicConfig(level=logging.INFO)
 
