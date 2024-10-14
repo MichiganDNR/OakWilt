@@ -10,17 +10,24 @@ import PIL.ExifTags as ExifTags
 import pandas as pd
 import logging
 import json
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {'origins': "*"}})
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-DESTINATION_PATH = "E:/Research/Vue-Flusk/dnr/sample_images"
-RESULTS_PATH = "E:/Research/Vue-Flusk/dnr/Results"
-MODEL_PATH = 'E:/Research/Vue-Flusk/dnr/oak_wilt_demo2.h5'
+# Base path using your current working directory
+BASE_PATH = "/Users/usmanq/GVSU/Staff Scientist/OakWiltResults"
+# Updated destination paths
+DESTINATION_PATH = os.path.join(BASE_PATH, 'sample_images')
+RESULTS_PATH = os.path.join(BASE_PATH, 'Results')
+MODEL_PATH = "/Users/usmanq/GVSU/Staff Scientist/OakWilt/Model Backup/oak_wilt_demo2.h5"
 FEEDBACK_FILE_PATH = os.path.join(DESTINATION_PATH, 'feedback.json')
 
 logging.basicConfig(level=logging.INFO)
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Load the model
 model = tf.keras.models.load_model(MODEL_PATH)
@@ -252,5 +259,8 @@ def preprocess_image(img):
     img_normalized = img_resized / 255.0
     return img_normalized
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    host = os.getenv('FLASK_RUN_HOST', '127.0.0.1')
+    port = int(os.getenv('FLASK_RUN_PORT', 5000))
+    app.run(host=host, port=port, debug=True)
