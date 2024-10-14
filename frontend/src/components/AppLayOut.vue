@@ -81,7 +81,7 @@
               class="grid-item"
             >
               <img
-                :src="`http://localhost:5000/images/${result.filename}`"
+                :src="`${apiUrl}/images/${result.filename}`"
                 alt="Image preview"
                 class="image-preview"
               />
@@ -89,7 +89,7 @@
                 <p>
                   <strong>File:</strong>
                   <a
-                    :href="`http://localhost:5000/images/${result.filename}`"
+                    :href="`${apiUrl}/images/${result.filename}`"
                     target="_blank"
                     >{{ result.filename }}</a
                   >
@@ -163,6 +163,7 @@ export default {
       map: null,
       showConfirmationPopup: false, // Track popup visibility
       feedbackData: null, // Store feedback to submit after confirmation
+      apiUrl: process.env.VUE_APP_API_URL, // Define apiUrl here
     };
   },
   watch: {
@@ -192,6 +193,9 @@ export default {
             .join("; ")
         : "";
     },
+    // apiUrl() {
+    //   return process.env.VUE_APP_API_URL;
+    // },
   },
   methods: {
     handleUploadImages() {
@@ -207,7 +211,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/upload-images",
+          `${this.apiUrl}/upload-images`,
           formData,
           {
             headers: {
@@ -215,14 +219,13 @@ export default {
             },
           }
         );
-
         this.classificationResults = Object.values(
           response.data.results
         ).flat();
         this.isLoading = false;
         this.notificationMessage = response.data.message;
-        this.downloadLinkCsv = `http://localhost:5000/results.csv`;
-        this.downloadLinkGeoJson = `http://localhost:5000/results.geojson`;
+        this.downloadLinkCsv = `${this.apiUrl}/results.csv`;
+        this.downloadLinkGeoJson = `${this.apiUrl}/results.geojson`;
         this.updateMapWithResults(this.classificationResults);
       } catch (error) {
         console.error("Error uploading files:", error);
@@ -271,8 +274,8 @@ export default {
           const markerColor = markerColors[result.classification] || "green";
           const popupContent = `
             <div>
-              <img src="http://localhost:5000/images/${result.filename}" style="width:100px;"><br>
-              <strong>File:</strong> <a href="http://localhost:5000/images/${result.filename}" target="_blank">${result.filename}</a><br>
+              <img src="${this.apiUrl}/images/${result.filename}" style="width:100px;"><br>
+              <strong>File:</strong> <a href="${this.apiUrl}/images/${result.filename}" target="_blank">${result.filename}</a><br>
               <strong>Prediction:</strong> ${result.prediction}<br>
               <strong>Category:</strong> ${result.classification}<br>
               <strong>Latitude:</strong> ${result.latitude}<br>
@@ -315,7 +318,7 @@ export default {
     submitFeedback(isConfirmed) {
       if (isConfirmed) {
         axios
-          .post("http://localhost:5000/submit-feedback", this.feedbackData)
+          .post(`${this.apiUrl}/submit-feedback`, this.feedbackData)
           .then((response) => {
             console.log("Feedback submitted:", response.data);
           })
