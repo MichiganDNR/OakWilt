@@ -56,7 +56,7 @@ The `.env.example` file contains a template of the necessary environment variabl
 
 Open the newly created `.env` file and update the values as need. The `.gitignore` file in the project already includes `.env` to ensure it is not committed. 
 
- Step 4: Running the Backend
+ #### Step 4: Running the Backend
 
 After installing the dependencies and configuring the environment variables, navigate to the backend directory and run the Flask application:
 

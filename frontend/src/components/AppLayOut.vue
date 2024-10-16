@@ -2,6 +2,7 @@
   <div class="app-container">
     <header class="app-header">
       <h1><strong>Oak Wilt Detection</strong></h1>
+      <Button class="logout-button" @click="logOut">Log Out</Button>
     </header>
 
     <div class="row">
@@ -146,6 +147,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
+import { signOut } from "firebase/auth";
 
 export default {
   name: "AppLayout",
@@ -198,6 +200,16 @@ export default {
     // },
   },
   methods: {
+    async logOut() {
+      try {
+        await signOut(this.$auth); // Sign out the user
+        console.log("User signed out successfully.");
+        // Optionally redirect the user after logout
+        this.$router.push("/"); // Redirect to home or login page
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    },
     handleUploadImages() {
       this.images = this.$refs.images.files;
     },
@@ -356,6 +368,13 @@ body,
   font-weight: bold;
 }
 
+.app-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .row {
   display: flex;
   font-size: 32px;
@@ -460,6 +479,17 @@ body,
   max-width: 130px;
   height: auto;
   margin-bottom: 5px;
+}
+
+.logout-button {
+  width: 10%;
+  height: 10%;
+  padding: 10px;
+  background-color: #42b983;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .loading-message {

@@ -16,6 +16,8 @@ Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 Vue.prototype.$auth = auth;
 
+export default { auth };
+
 new Vue({
   router,
   render: (h) => h(App),
