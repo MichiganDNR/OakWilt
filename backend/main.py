@@ -14,10 +14,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 app = Flask(__name__)
-
-# Load environment variables from .env file
-load_dotenv()
-
 CORS(app, resources={r"/*": {'origins': "*"}})
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -39,19 +35,6 @@ RESULTS_PATH.mkdir(parents=True, exist_ok=True)
 FEEDBACK_FILE_PATH = DESTINATION_PATH / os.getenv('FEEDBACK_FILE_NAME')
 
 logging.basicConfig(level=logging.INFO)
-
-# Base path using your current working directory
-BASE_PATH = "/Users/usmanq/GVSU/Staff Scientist/OakWiltResults"
-# Updated destination paths
-DESTINATION_PATH = os.path.join(BASE_PATH, 'sample_images')
-RESULTS_PATH = os.path.join(BASE_PATH, 'Results')
-MODEL_PATH = "/Users/usmanq/GVSU/Staff Scientist/OakWilt/Model Backup/oak_wilt_demo2.h5"
-FEEDBACK_FILE_PATH = os.path.join(DESTINATION_PATH, 'feedback.json')
-
-logging.basicConfig(level=logging.INFO)
-
-# Load environment variables from .env file
-load_dotenv()
 
 # Load the model
 model = tf.keras.models.load_model(MODEL_PATH)
