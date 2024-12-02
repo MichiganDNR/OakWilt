@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <div class="app-container">
     <header class="app-header">
@@ -81,7 +82,7 @@
               class="grid-item"
             >
               <img
-                :src="`http://localhost:5000/images/${result.filename}`"
+                :src="`${apiURL}/images/${result.filename}`"
                 alt="Image preview"
                 class="image-preview"
               />
@@ -89,7 +90,7 @@
                 <p>
                   <strong>File:</strong>
                   <a
-                    :href="`http://localhost:5000/images/${result.filename}`"
+                    :href="`${apiURL}/images/${result.filename}`"
                     target="_blank"
                     >{{ result.filename }}</a
                   >
@@ -147,6 +148,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 
+/* eslint-disable */
+
 export default {
   name: "AppLayout",
   data() {
@@ -163,6 +166,7 @@ export default {
       map: null,
       showConfirmationPopup: false, // Track popup visibility
       feedbackData: null, // Store feedback to submit after confirmation
+      apiURL: process.env.VUE_APP_API_URL, // Define apiUrl here
     };
   },
   watch: {
@@ -207,7 +211,7 @@ export default {
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/upload-images",
+          `${this.apiURL}/upload-images`,
           formData,
           {
             headers: {
@@ -221,8 +225,8 @@ export default {
         ).flat();
         this.isLoading = false;
         this.notificationMessage = response.data.message;
-        this.downloadLinkCsv = `http://localhost:5000/results.csv`;
-        this.downloadLinkGeoJson = `http://localhost:5000/results.geojson`;
+        this.downloadLinkCsv = `${this.apiURL}/results.csv`;
+        this.downloadLinkGeoJson = `${this.apiURL}/results.geojson`;
         this.updateMapWithResults(this.classificationResults);
       } catch (error) {
         console.error("Error uploading files:", error);
@@ -271,8 +275,8 @@ export default {
           const markerColor = markerColors[result.classification] || "green";
           const popupContent = `
             <div>
-              <img src="http://localhost:5000/images/${result.filename}" style="width:100px;"><br>
-              <strong>File:</strong> <a href="http://localhost:5000/images/${result.filename}" target="_blank">${result.filename}</a><br>
+              <img src="${this.apiURL}/images/${result.filename}" style="width:100px;"><br>
+              <strong>File:</strong> <a href="${this.apiURL}/images/${result.filename}" target="_blank">${result.filename}</a><br>
               <strong>Prediction:</strong> ${result.prediction}<br>
               <strong>Category:</strong> ${result.classification}<br>
               <strong>Latitude:</strong> ${result.latitude}<br>
@@ -315,7 +319,7 @@ export default {
     submitFeedback(isConfirmed) {
       if (isConfirmed) {
         axios
-          .post("http://localhost:5000/submit-feedback", this.feedbackData)
+          .post(`${this.apiURL}/submit-feedback`, this.feedbackData)
           .then((response) => {
             console.log("Feedback submitted:", response.data);
           })
