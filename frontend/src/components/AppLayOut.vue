@@ -349,7 +349,7 @@ body,
   min-height: 100vh;
   text-align: center;
   color: rgb(7, 0, 0);
-  background-color: rgb(248, 247, 188);
+  background-color: #f6e7a3;
 }
 
 .app-header h1 {

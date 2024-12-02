@@ -1,19 +1,15 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div id = "app">
-    <AppLayOut/>
+    <router-view/>
   </div>
 </template>
 
 <!-- eslint-disable prettier/prettier -->
 <script>
-import AppLayOut from './components/AppLayOut.vue'
 
 export default {
   name: 'App',
-  components: {
-    AppLayOut
-  }
 }
 </script>
 
