@@ -87,17 +87,39 @@ npm install
 
 This will install all the required `node_modules` for the VueJS frontend, including any necessary libraries for building the interface and making API requests to the backend.
 
- #### Step 4: Run the Frontend
+ #### Step 4: Add your firebase configs to the project
 
-After installing the dependencies, start the VueJS development server using:
+ Create a configs directory and create a firebase.js file in it.
 
-npm run serve
+ Now from your firebase console account, create a project and copy the configuration information.
 
-This command will start the frontend on `localhost:8080` by default. You can now access the web interface to upload images and view predictions.
+ The firebase.js file should look like this.
+
+    ```javascript
+    const firebaseConfig = {  
+        apiKey: "<YOUR_API_KEY>",  
+        authDomain: "<YOUR_AUTH_DOMAIN>",  
+        projectId: "<YOUR_PROJECT_ID>",  
+        storageBucket: "<YOUR_STORAGE_BUCKET>",  
+        messagingSenderId: "<YOUR_MESSAGING_SENDER_ID>",  
+        appId: "<YOUR_APP_ID>",  
+    };
+
+    export default firebaseConfig;
+
+    ```
+
+ #### Step 5: Run the Frontend
+
+ After installing the dependencies, start the VueJS development server using:
+
+ npm run serve
+
+ This command will start the frontend on `localhost:8080` by default. You can now access the web interface to upload images and view predictions.
 
 ---
 
- Running the Full Project
+## Running the Full Project
 
 To run the project:
 
