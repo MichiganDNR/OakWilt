@@ -1,5 +1,5 @@
 <!-- eslint-disable prettier/prettier -->
- <template>
+<template>
     <div class="container">
         <header class="header">
             <h1>DNR Oak Wilt</h1>
@@ -20,24 +20,33 @@
             required
           />
           <button type="submit">Sign In</button>
+          <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         </form>
       </div>
     </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
   <script>
+  import { signInWithEmailAndPassword } from "firebase/auth";
+  
   export default {
     data() {
       return {
         email: '',
         password: '',
+        errorMessage: '',
       };
     },
     methods: {
-      signIn() {
-        this.$router.push('/upload-images');
-        console.log("Button clicked!", this.email, this.password);
-        // Add your sign-in logic here
+      async signIn() {
+        try {
+          await signInWithEmailAndPassword(this.$auth, this.email, this.password);
+          this.$router.push('/upload-images');
+        }
+        catch (error) {
+          console.error("Error signing in:", error);
+          this.errorMessage = error.message;
+      }
       },
     },
   };
@@ -100,6 +109,10 @@
     background-color: #36a072;
   }
   
+  .error {
+  color: red; /* Style for error message */
+  }
+
   .footer-text {
     margin-top: 1em;
     font-size: 0.9em;
