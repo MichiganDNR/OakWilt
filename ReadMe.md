@@ -18,12 +18,16 @@ Before starting, ensure you have the following installed:
  First, create a virtual environment to isolate the project dependencies. Use the following commands in your terminal or PowerShell:
 
  #### Mac
+ ```
  python3 -m venv venv  
- source venv/bin/activate  
+ source venv/bin/activate
+ ```
 
  #### Windows
- py -m venv "E:\Research\Vue-Flusk\dnr\venv"  
- .\venv\Scripts\Activate.ps1  
+ ```
+ py -m venv "<add your path>\venv"
+ .\venv\Scripts\Activate.ps1
+ ```
 
 This command will create and activate a virtual environment in your project directory.
 
@@ -31,7 +35,9 @@ This command will create and activate a virtual environment in your project dire
 
 Once the virtual environment is active, install the required dependencies by running the following command inside your project directory where the `requirements.txt` file is located:
 
+```
 pip install -r requirements.txt
+```
 
 This will install the following dependencies:
 
@@ -52,7 +58,9 @@ This will install the following dependencies:
 
 The `.env.example` file contains a template of the necessary environment variables. Use the following command to copy it:
 
-    cp .env.example .env
+```
+cat .env.example >> .env
+```
 
 Open the newly created `.env` file and update the values as need.
 
@@ -60,8 +68,10 @@ Open the newly created `.env` file and update the values as need.
 
 After installing the dependencies and configuring the environment variables, navigate to the backend directory and run the Flask application:
 
+```
 cd backend
 py main.py
+```
 
 The backend will start, and the server will be running on `localhost:5000`. This will be the core API that the frontend interacts with for processing images and predictions.
 
@@ -71,19 +81,25 @@ The backend will start, and the server will be running on `localhost:5000`. This
 
 Make sure you have Vue CLI installed globally on your system. If not, you can install it using the following command:
 
+```
 npm install -g @vue/cli
+```
 
  #### Step 2: Navigate to the Frontend Directory
 
 Navigate to the `frontend` folder to install dependencies:
 
+```
 cd frontend
+```
 
  #### Step 3: Install Node Modules
 
 To install the necessary dependencies for the frontend, run:
 
+```
 npm install
+```
 
 This will install all the required `node_modules` for the VueJS frontend, including any necessary libraries for building the interface and making API requests to the backend.
 
@@ -104,16 +120,16 @@ This will install all the required `node_modules` for the VueJS frontend, includ
         messagingSenderId: "<YOUR_MESSAGING_SENDER_ID>",  
         appId: "<YOUR_APP_ID>",  
     };
-
     export default firebaseConfig;
-
     ```
 
  #### Step 5: Run the Frontend
 
  After installing the dependencies, start the VueJS development server using:
 
+ ```
  npm run serve
+ ```
 
  This command will start the frontend on `localhost:8080` by default. You can now access the web interface to upload images and view predictions.
 
