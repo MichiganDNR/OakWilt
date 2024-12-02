@@ -111,17 +111,17 @@ This will install all the required `node_modules` for the VueJS frontend, includ
 
  The firebase.js file should look like this.
 
-    ```javascript
-    const firebaseConfig = {  
-        apiKey: "<YOUR_API_KEY>",  
-        authDomain: "<YOUR_AUTH_DOMAIN>",  
-        projectId: "<YOUR_PROJECT_ID>",  
-        storageBucket: "<YOUR_STORAGE_BUCKET>",  
-        messagingSenderId: "<YOUR_MESSAGING_SENDER_ID>",  
-        appId: "<YOUR_APP_ID>",  
-    };
-    export default firebaseConfig;
-    ```
+ ```
+ const firebaseConfig = {  
+    apiKey: "<YOUR_API_KEY>",  
+    authDomain: "<YOUR_AUTH_DOMAIN>",  
+    projectId: "<YOUR_PROJECT_ID>",  
+    storageBucket: "<YOUR_STORAGE_BUCKET>",  
+    messagingSenderId: "<YOUR_MESSAGING_SENDER_ID>",  
+    appId: "<YOUR_APP_ID>",  
+ };
+ export default firebaseConfig;
+ ```
 
  #### Step 5: Run the Frontend
 
