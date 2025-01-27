@@ -12,6 +12,7 @@ import logging
 import json
 from pathlib import Path
 from dotenv import load_dotenv
+from sklearn.model_selection import train_test_split #Newly Added
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {'origins': "*"}})
@@ -32,7 +33,12 @@ MODEL_PATH = BASE_DIR.parent / os.getenv('MODEL_PATH')
 DESTINATION_PATH.mkdir(parents=True, exist_ok=True)
 RESULTS_PATH.mkdir(parents=True, exist_ok=True)
 
+
 FEEDBACK_FILE_PATH = DESTINATION_PATH / os.getenv('FEEDBACK_FILE_NAME')
+
+# Initialize feedback accumulator
+FEEDBACK_BATCH_SIZE = 10 #Newly Added
+feedback_accumulator = [] #Newly Added
 
 logging.basicConfig(level=logging.INFO)
 
@@ -247,19 +253,36 @@ def convert_to_degrees(value):
     d, m, s = value
     return d + (m / 60.0) + (s / 3600.0)
 
-def retrain_model(feedback_data):
-    img_path = os.path.join(DESTINATION_PATH, feedback_data['filename'])
-    img = cv2.imread(img_path)
-    img_preprocessed = preprocess_image(img)
-    
-    label = 0 if feedback_data['isCorrect'] else 1  # Assuming binary classification
-    x_train = np.array([img_preprocessed])
-    y_train = np.array([label])
-    
-    # Recompile the model before retraining
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-    model.fit(x_train, y_train, epochs=1, verbose=1)
+def load_original_data_subset(size=50):
+    original_training_data = np.random.rand(size, 256, 256, 3)
+    original_labels = np.random.randint(0, 2, size)
+    return original_training_data, original_labels
+
+def retrain_model(): #Newly Added
+    if len(feedback_accumulator) < FEEDBACK_BATCH_SIZE:
+        logging.info("Not enough feedback data to retrain. Waiting for more feedback samples.")
+        return
+
+    logging.info("Retraining the model with accumulated feedback data.")
+    original_data, original_labels = load_original_data_subset(size=50)
+
+    feedback_data, feedback_labels = zip(*feedback_accumulator)
+    feedback_data = np.array(feedback_data)
+    feedback_labels = np.array(feedback_labels)
+
+    x_train = np.concatenate([feedback_data, original_data])
+    y_train = np.concatenate([feedback_labels, original_labels])
+
+    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
+
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
+                  loss='binary_crossentropy', metrics=['accuracy'])
+
+    model.fit(x_train, y_train, validation_data=(x_val, y_val), epochs=3, batch_size=4, verbose=1)
     model.save(MODEL_PATH)
+    feedback_accumulator.clear()
+    logging.info("Model retrained and saved successfully.")
+
 
 def preprocess_image(img):
     img_resized = cv2.resize(img, (256, 256))
