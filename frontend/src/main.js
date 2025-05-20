@@ -4,7 +4,7 @@ import axios from "axios";
 import router from "./router";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import firebaseConfig from "../configs/firebase";
+import firebaseConfig from "../firebase";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
