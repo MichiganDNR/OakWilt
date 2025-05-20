@@ -19,11 +19,12 @@ Before starting, ensure you have the following installed:
 
  #### Mac
  ```
- python3 -m venv venv  
+ python3.11 -m venv venv  
  source venv/bin/activate
  ```
 
  #### Windows
+ Note: I'm not sure if this works on Windows. Update on 05/20/2025: Pinning to Python 3.11 if you run into issues.
  ```
  py -m venv "<add your path>\venv"
  .\venv\Scripts\Activate.ps1
@@ -39,32 +40,11 @@ Once the virtual environment is active, install the required dependencies by run
 pip install -r requirements.txt
 ```
 
-This will install the following dependencies:
+#### Step 3: Configure Environment Variables
+    
+Validate values in .env are correct.
 
-- Flask == 2.0.1
-- Flask-Cors == 3.0.10
-- Pillow == 10.2.0
-- Werkzeug == 2.0
-- itsdangerous == 2.0
-- click == 7.1.2
-- Pandas == 2.0.1
-- piexif == 1.1.3
-- tensorflow == 2.16.1
-- opencv-python == 4.8.0.74
-- numpy == 1.24.3
-- python-dotenv == 1.0.1
-
- #### Step 3: Configure Environment Variables
-
-The `.env.example` file contains a template of the necessary environment variables. Use the following command to copy it:
-
-```
-cat .env.example >> .env
-```
-
-Open the newly created `.env` file and update the values as need.
-
- #### Step 4: Running the Backend
+#### Step 4: Running the Backend
 
 After installing the dependencies and configuring the environment variables, navigate to the backend directory and run the Flask application:
 

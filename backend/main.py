@@ -24,10 +24,17 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent
 
+destination = os.getenv('DESTINATION_PATH')
+results = os.getenv('RESULTS_PATH')
+model = os.getenv('MODEL_PATH')
+
+if not all([destination, results, model]):
+    raise EnvironmentError("Environment variables not set")
+
 # Retrieve values from environment variables
-DESTINATION_PATH = BASE_DIR / os.getenv('DESTINATION_PATH')
-RESULTS_PATH = BASE_DIR / os.getenv('RESULTS_PATH')
-MODEL_PATH = BASE_DIR.parent / os.getenv('MODEL_PATH')
+DESTINATION_PATH = BASE_DIR / Path(destination)
+RESULTS_PATH = BASE_DIR / Path(results)
+MODEL_PATH = BASE_DIR / Path(model)
 
 # Create directories if they do not exist
 DESTINATION_PATH.mkdir(parents=True, exist_ok=True)
