@@ -3,7 +3,7 @@ name: Deploy Vue App to S3
 on:
   push:
     branches:
-      - citest
+      - main
 
 jobs:
   build-and-deploy:
