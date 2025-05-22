@@ -79,4 +79,6 @@ source env/bin/activate
 pip install -r requirements.txt
 
 sudo ufw allow 5000
+
+gunicorn --bind 0.0.0.0:5000 wsgi:app
 ```
